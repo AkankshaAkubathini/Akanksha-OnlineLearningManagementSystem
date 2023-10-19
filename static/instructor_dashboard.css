@@ -1,0 +1,18 @@
+.form-container {
+    display: flex;
+    justify-content: space-between;
+}
+.form-container form {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    max-width: 45%; 
+    box-sizing: border-box;
+}
+.form-container form input, .form-container form label, .form-container form textarea {
+    display: block;
+    margin: 10px 0;
+}
