@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+    {% block head %}
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{url_for('static',filename='login.css')}}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">   
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{url_for('static',filename='search.css')}}">
+    {% endblock %}
+    {% block content %}
+    <body>
+        <div class="login-container">
+        <img src="{{url_for('static',filename='images/login.png')}}" class="login-image"/>
+            <form method="post" class="login-form">
+                <h3>Login Here</h3>
+                <label for="email">Email</label>
+                <input name="email" type="email" id="email" placeholder="Email" required>
+                <label for="password">Password</label>
+                <input type="password" placeholder="Password" id="password" name="password" required>
+                <label for="user">Category:</label>
+                <label for="student" class="radio"><input type="radio" id="student" name="user" value="student" required>Student</label>
+                <label for="instructor" class="radio"><input type="radio" id="instructor" name="user" value="instructor" required>Instructor</label>
+                <input type="submit" value="login" class="button">
+                {% if message %}
+                    <p style="color:red">{{message}}</p>
+                {% endif %}
+                <div class="signup-link">Not a member? <a href="{{url_for('signup')}}">Signup now</a></div>
+                <p class="admin_link">Admin? <a href="{{ url_for('admin_login') }}">Admin Page</a></p>
+            </form>
+        </div>
+    {% endblock content %}

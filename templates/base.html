@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{url_for('static',filename='base.css')}}">
+    <title>Online Learning Management System</title>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="{{url_for('static',filename='images/guvi_logo.png')}}"/>
+        </div>
+        <h2>GUVI</h2>
+        <form method="POST" action="{{url_for('search')}}" class="search-form">
+            <label for="keyword" class="search-icon"></label>
+            <input type="text" name="keyword" id="keyword" placeholder="Enter a keyword">
+            <input type="submit" value="Search">
+        </form>
+        <ul class="nav-links">    
+            <li><a href="{{url_for('home')}}">Home</a></li>
+            {% if session.logged_in %}
+            <li>Welcome, {{session.user_name}}</li>
+            <li><a href="{{url_for('logout')}}">Logout</a></li>
+            {% if session.user_name!= 'admin' %}
+                <li><a href="{{url_for('MyCourses',courses_name=course_name)}}"><img src="{{url_for('static',filename='images/profile.png')}}" class="gravatar"></a></li>
+            {% endif %}
+            
+            {% else %}
+            <li><a href="{{url_for('login')}}">Login</a></li>
+            <li><a href="{{url_for('signup')}}">Signup</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

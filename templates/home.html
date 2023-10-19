@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+    {% block head %}
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{url_for('static',filename='home.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='search.css')}}">
+        {% endblock %}
+        {% block content %}
+
+    <body>
+
+        <div id="carouselExample" class="carousel slide" style="max-width:100%;">
+          <div class="carousel-inner">
+            <div class="carousel-item active" >
+              <img src="{{url_for('static', filename='images/Reservation.png')}}" data-link="https://www.youtube.com/watch?v=cN7BqjAkHmM" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="{{url_for('static', filename="images/Student's Day.png")}}"  data-link="https://www.guvi.in/zen-class/" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" >
+              <img src="{{url_for('static', filename='images/Skill-Up.png')}}" data-link="https://www.guvi.in/mlp/skill-up-sale?utm_source=Website-banner&utm_medium=homepage&utm_campaign=skill-up-sale1" class="d-block w-100" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+
+        <div class="row ">
+            {% for courses in data %}
+            <div class="col">
+              <div class="card">
+                <img src="{{ courses.image}}" class="card-img" alt="{{ courses.name }}" height="250px">
+                <div class="card-body">
+                  <h5 class="card-title ">{{ courses.name }}</h5>
+                  <p class="card-text "><strong>Description:</strong>{{ courses.desc}}</p>
+                  {% if courses.course=="Free" %}
+                    <h5 class="card-subtitle free">{{ courses.course }}</h5>
+                  {% else %}
+                    <h5 class="card-subtitle premium">{{ courses.course }}</h5>
+                  {% endif %}
+                </div>
+                <form method="POST" action="{{url_for('cart')}}">
+                  <input type="hidden" name="courses_name" value="{{courses.name}}">
+                  <input type="hidden" name="category" value="{{courses.course}}">
+                  {% if session.user_name!='admin'%}
+                  <input type="submit" diasbled value="Add Course" style="color: white;">
+                  {% endif %}
+                </form>
+              </div>
+            </div>
+            {% if loop.index % 4 == 0 %}
+              </div><div class="row">
+            {% endif %}
+            {% endfor %}
+        </div>
+
+            <!-- Image at the bottom right to open the chatbot modal -->
+        <img src="{{url_for('static', filename='images/chatbot.png')}}" id="open-chatbot" style="position: fixed; right: 20px; bottom: 20px; cursor: pointer;" alt="Chatbot Image">
+
+        <!-- Chatbot Modal -->
+        <div id="chatbot-modal" class="chatbot-modal">
+            <h2>Chatbot</h2>
+            <!-- Chatbot content goes here -->
+            <div id="chat-content">
+                <p>Welcome! How can I assist you?</p>
+            </div>
+            <input type="text" id="user-message" placeholder="Type your message...">
+            <button id="send-message">Send</button>
+        </div>
+
+    
+   
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+        <script>
+          $(document).ready(function() {
+            $('.carousel-inner img').click(function() {
+              var link = $(this).data('link');
+              window.location.href = link;
+            });
+          });
+
+          // Get the chatbot modal element
+          var chatbotModal = document.getElementById("chatbot-modal");
+
+          // Get the image that opens the chatbot modal
+          var openChatbotImage = document.getElementById("open-chatbot");
+
+          // When the user clicks on the image, open the chatbot modal
+          openChatbotImage.onclick = function() {
+              chatbotModal.style.display = "block";
+          }
+
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+              if (event.target == chatbotModal) {
+                  chatbotModal.style.display = "none";
+              }
+          }
+              
+          // Handle user messages and chatbot responses
+          document.getElementById("send-message").addEventListener("click", function() {
+            var userMessage = document.getElementById("user-message").value;
+            document.getElementById("user-message").value = ''; // Clear the input field
+            
+            // Display the user message in the chat
+            displayUserMessage(userMessage);
+
+            sendUserMessageToBackend(userMessage);
+          });
+
+          // Function to display user messages
+          function displayUserMessage(message) {
+            var chatContent = document.getElementById("chat-content");
+            var userMessageDiv = document.createElement("div");
+            userMessageDiv.className = "user-message";
+            userMessageDiv.textContent = message;
+            chatContent.appendChild(userMessageDiv);
+          }
+
+          // Function to display chatbot responses
+          function displayChatbotResponse(message) {
+            var chatContent = document.getElementById("chat-content");
+            var chatbotResponseDiv = document.createElement("div");
+            chatbotResponseDiv.className = "chatbot-message";
+            chatbotResponseDiv.textContent = message;
+            chatContent.appendChild(chatbotResponseDiv);
+          }
+
+          // Function to send user message to the Flask backend and receive a response
+          function sendUserMessageToBackend(userMessage) {
+            // Make an AJAX or fetch request to your Flask backend
+            // Handle the response from the backend and display the chatbot's response
+            // Example AJAX/fetch code:
+            fetch("/get_response", {
+                method: "POST",
+                body: JSON.stringify({ user_message: userMessage }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayChatbotResponse(data.response);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+          }
+
+        </script>
+        {% endblock content%}
+            

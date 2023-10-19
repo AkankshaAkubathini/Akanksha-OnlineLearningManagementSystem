@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+    {% block head %}
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{url_for('static',filename='home.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='search.css')}}">
+        {% endblock %}
+        {% block content %}
+    <body>
+        <h1> Courses I teach </h1>
+        <div class="row ">
+            {% for item in data%}
+            <div class="col">
+              <div class="card">
+                <img src="{{item.image}}" class="card-img" alt="{{ item.name }}" height="250px">
+                <div class="card-body">
+                  <h5 class="card-title ">{{ item.name }}</h5>
+                  <p class="card-text "><strong>Description:</strong>{{ item.desc}}</p>
+                  <h5 class="card-title ">{{ item.course}}</h5>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+          
+    {% endblock content%}

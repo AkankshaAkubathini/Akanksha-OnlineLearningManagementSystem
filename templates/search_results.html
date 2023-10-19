@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+    {% block head %}
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">  
+        <link rel="stylesheet" href="{{url_for('static',filename='home.css')}}">
+    {% endblock %}
+    {% block content %}
+    <body>
+        <div class="row ">
+            {% for item in results%}
+            <div class="col">
+              <div class="card">
+                <img src="{{ item.image}}" class="card-img" alt="{{ item.name }}" height="250px">
+                <div class="card-body">
+                  <h5 class="card-title ">{{ item.name }}</h5>
+                  <p class="card-text "><strong>Description:</strong>{{ item.description}}</p>
+                  <h5 class="card-subtitle ">{{ item.course}}</h5>
+                </div>
+                <form method="POST" action="{{url_for('cart')}}">
+                  <input type="hidden" name="courses_name" value="{{item.name}}">
+                  <input type="hidden" name="category" value="{{item.course}}">
+                  <input type="submit" value="Add Course">
+                </form>
+          
+              </div>
+            </div>
+            {% endfor %}
+            
+          </div>
+    {% endblock content%}
